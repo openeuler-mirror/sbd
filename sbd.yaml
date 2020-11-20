@@ -1,0 +1,5 @@
+---
+version_control: github
+src_repo: ClusterLabs/sbd
+tag_prefix: ^v
+separator: "."
