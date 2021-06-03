@@ -18,14 +18,14 @@
 %global commit 7f33d1a409d0a4e2cd69946688c48eaa8f3c5d26
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global github_owner Clusterlabs
-%global buildnum 15
+%global buildnum 16
 
 Name:           sbd
 Summary:        Storage-based death
 License:        GPLv2 and MIT
 Group:          System Environment/Daemons
 Version:        1.4.0
-Release:        %{buildnum}%{?dist}
+Release:        %{buildnum}
 Url:            https://github.com/%{github_owner}/%{name}
 Source0:        https://github.com/%{github_owner}/%{name}/archive/%{commit}/%{name}-%{commit}_all.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -125,5 +125,8 @@ fi
 %doc COPYING
 
 %changelog
+* Mon Dec 28 2020 wangxiao <wangxiao65@huawei.com> - 1.4.0-16
+- remove redundant %{?dist}
+
 * Fri Oct 30 2020 jiangxinyu <jiangxinyu@kylinos.cn> - 1.4.0-15
 - Init sbd project
