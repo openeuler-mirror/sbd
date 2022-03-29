@@ -18,7 +18,7 @@
 %global commit 7f33d1a409d0a4e2cd69946688c48eaa8f3c5d26
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 %global github_owner Clusterlabs
-%global buildnum 16
+%global buildnum 17
 
 Name:           sbd
 Summary:        Storage-based death
@@ -28,6 +28,7 @@ Version:        1.4.0
 Release:        %{buildnum}
 Url:            https://github.com/%{github_owner}/%{name}
 Source0:        https://github.com/%{github_owner}/%{name}/archive/%{commit}/%{name}-%{commit}_all.tar.gz
+Patch0:         0001-Fix-the-problem-of-service-error-when-uninstalling.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -42,9 +43,7 @@ BuildRequires:  libxml2-devel
 BuildRequires:  pkgconfig
 BuildRequires:  systemd
 
-%if 0%{?rhel} > 0
-ExclusiveArch: i686 x86_64 s390x ppc64le aarch64
-%endif
+ExclusiveArch: x86_64 aarch64
 
 %if %{defined systemd_requires}
 %systemd_requires
@@ -57,7 +56,7 @@ This package contains the storage-based death functionality.
 ###########################################################
 
 %prep
-%autosetup -n %{name}-%{commit}
+%autosetup -p1 -n %{name}-%{commit}
 
 ###########################################################
 
@@ -125,6 +124,9 @@ fi
 %doc COPYING
 
 %changelog
+* Mon Mar 28 2022 jiangxinyu <jiangxinyu@kylinos.cn> - 1.4.0-17
+- Fix the problem of service error when uninstalling
+
 * Thur Dec 16 2021 liqiuyu <liqiuyu@kylinos.cn> - 1.4.0-16
 - Remove the release suffix
 
