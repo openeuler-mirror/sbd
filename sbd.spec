@@ -2,7 +2,7 @@
 %global shortcommit %(echo %{longcommit}|cut -c1-8)
 %global modified %(echo %{longcommit}-|cut -f2 -d-)
 %global github_owner Clusterlabs
-%global buildnum 1
+%global buildnum 2
 %global watchdog_timeout_default 5
 %global sync_resource_startup_sysconfig ""
 
@@ -17,6 +17,7 @@ Release:        %{buildnum}
 Url:            https://github.com/%{github_owner}/%{name}
 Source0:        https://github.com/%{github_owner}/%{name}/archive/%{longcommit}/%{name}-%{longcommit}.tar.gz
 Patch0:         0001-Fix-the-problem-of-service-error-when-uninstalling.patch
+Patch1:         fix-clang-build-error.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  autoconf
 BuildRequires:  automake
@@ -132,6 +133,9 @@ fi
 %{_libdir}/libsbdtestbed*
 
 %changelog
+* Mon May 22 2023 jammyjellyfish <jammyjellyfish255@outlook.com> - 1.5.1-2
+- Fix clang build error
+
 * Thu Feb 02 2023 jiangxinyu <jiangxinyu@kylinos.cn> - 1.5.1-1
 - Update package to version 1.5.1
 
