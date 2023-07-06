@@ -1,0 +1,67 @@
+diff -up  a/src/sbd-inquisitor.c  b/src/sbd-inquisitor.c
+---  a/src/sbd-inquisitor.c	2023-05-22 15:07:46.695711692 +0800
++++  b/src/sbd-inquisitor.c	2023-05-22 15:08:43.349645666 +0800
+@@ -189,7 +189,7 @@ int check_all_dead(void)
+ {
+ 	struct servants_list_item *s;
+ 	int r = 0;
+-	union sigval svalue;
++	union sigval svalue = {0};
+ 
+ 	for (s = servants_leader; s; s = s->next) {
+ 		if (s->pid != 0) {
+@@ -205,7 +205,7 @@ int check_all_dead(void)
+ void servant_start(struct servants_list_item *s)
+ {
+ 	int r = 0;
+-	union sigval svalue;
++	union sigval svalue = {0};
+ 
+ 	if (s->pid != 0) {
+ 		r = sigqueue(s->pid, 0, svalue);
+@@ -250,7 +250,7 @@ void servants_start(void)
+ void servants_kill(void)
+ {
+ 	struct servants_list_item *s;
+-	union sigval svalue;
++	union sigval svalue = {0};
+ 
+ 	for (s = servants_leader; s; s = s->next) {
+ 		if (s->pid != 0)
+@@ -279,7 +279,7 @@ static inline void cleanup_servant_by_pi
+ int inquisitor_decouple(void)
+ {
+ 	pid_t ppid = getppid();
+-	union sigval signal_value;
++	union sigval signal_value = {0};
+ 
+ 	/* During start-up, we only arm the watchdog once we've got
+ 	 * quorum at least once. */
+diff -up  a/src/sbd-md.c  b/src/sbd-md.c
+---  a/src/sbd-md.c	2023-05-22 15:20:13.917772914 +0800
++++  b/src/sbd-md.c	2023-05-22 15:20:59.556423584 +0800
+@@ -1078,7 +1078,7 @@ int servant_md(const char *diskname, int
+ 	int mbox;
+ 	int rc = 0;
+ 	time_t t0, t1, latency;
+-	union sigval signal_value;
++	union sigval signal_value = {0};
+ 	sigset_t servant_masks;
+ 	struct sbd_context *st;
+ 	pid_t ppid;
+diff -up  a/src/sbd-pacemaker.c  b/src/sbd-pacemaker.c
+---  a/src/sbd-pacemaker.c	2023-05-22 15:20:29.347314112 +0800
++++  b/src/sbd-pacemaker.c	2023-05-22 15:21:55.838123386 +0800
+@@ -351,12 +351,10 @@ cib_connect(gboolean full)
+ static void
+ compute_status(pe_working_set_t * data_set)
+ {
+-    static int updates = 0;
+     static int ever_had_quorum = FALSE;
+ 
+     node_t *node = NULL;
+ 
+-    updates++;
+ 
+     if (data_set->dc_node == NULL) {
+         set_servant_health(pcmk_health_transient, LOG_INFO, "We don't have a DC right now.");
