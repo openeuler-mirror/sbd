@@ -2,7 +2,7 @@
 %global shortcommit %(echo %{longcommit}|cut -c1-8)
 %global modified %(echo %{longcommit}-|cut -f2 -d-)
 %global github_owner Clusterlabs
-%global buildnum 2
+%global buildnum 3
 %global watchdog_timeout_default 5
 %global sync_resource_startup_sysconfig ""
 
@@ -59,6 +59,9 @@ regression-testing sbd.
 %autosetup -p1 -n %{name}-%{longcommit}
 
 %build
+%if "%toolchain" == "clang"
+	export LDFLAGS=`echo $LDFLAGS | sed 's/-fno-openmp-implicit-rpath//g'`
+%endif
 ./autogen.sh
 export CFLAGS="$RPM_OPT_FLAGS -Wall -Werror"
 %configure --with-watchdog-timeout-default=%{watchdog_timeout_default} \
@@ -133,6 +136,9 @@ fi
 %{_libdir}/libsbdtestbed*
 
 %changelog
+* Sun Jul 16 2023 yoo <sunyuechi@iscas.ac.cn> - 1.5.1-%{buildnum}
+- fix clang build error
+
 * Mon May 22 2023 jammyjellyfish <jammyjellyfish255@outlook.com> - 1.5.1-2
 - Fix clang build error
 
